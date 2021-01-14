@@ -1,18 +1,30 @@
-version: "3.9"  # optional since v1.27.0
+version: "3.9"
 services:
   influxdb:
     image: influxdb:1.8-alpine
     container_name: influxdb
     ports:
-    - 127.0.0.1:9091:9091
+      - "${INFLUXDB_HOST}:${INFLUXDB_PORT}:${INFLUXDB_PORT}"
     volumes:
       - influxdb:/var/lib/influxdb
     restart: always
     environment:
-    - INFLUXDB_REPORTING_DISABLED="${INFLUXDB_REPORTING_DISABLED}"
+      - "INFLUXDB_GRAPHITE_ENABLED=${INFLUXDB_GRAPHITE_ENABLED}"
+      - "INFLUXDB_REPORTING_DISABLED=${INFLUXDB_REPORTING_DISABLED}"
+      - "INFLUXDB_DB=${INFLUXDB_DB}"
+      - "INFLUXDB_USER=${INFLUXDB_USER}"
+      - "INFLUXDB_USER_PASSWORD=${INFLUXDB_USER_PASSWORD}"
   librespeed-grafana:
     build: .
     container_name: librespeed-grafana:0.0.1
+    depends_on: influxdb
+    environment:
+      - "SPEEDTEST_INTERVAL=${SPEEDTEST_INTERVAL}"
+      - "SPEEDTEST_SERVER_ID=${SPEEDTEST_SERVER_ID}"
+      - "INFLUXDB_HOST=${INFLUXDB_HOST}"
+      - "INFLUXDB_DB=${INFLUXDB_DB}"
+      - "INFLUXDB_USER=${INFLUXDB_USER}"
+      - "INFLUXDB_USER_PASSWORD=${INFLUXDB_USER_PASSWORD}"
 
 volumes:
   influxdb: {}

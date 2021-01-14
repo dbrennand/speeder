@@ -61,10 +61,10 @@ while True:
                 "fields": {
                     "bytes_sent": json_result["bytes_sent"],
                     "bytes_received": json_result["bytes_received"],
-                    "ping": json_result["ping"],
-                    "jitter": json_result["jitter"],
-                    "upload": json_result["upload"],
-                    "download": json_result["download"]
+                    "ping": float(json_result["ping"]),
+                    "jitter": float(json_result["jitter"]),
+                    "upload": float(json_result["upload"]),
+                    "download": float(json_result["download"])
                 }
             }
         ]

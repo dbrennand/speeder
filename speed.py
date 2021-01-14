@@ -25,10 +25,10 @@ with influxdb.InfluxDBClient(host=INFLUXDB_HOST, port=INFLUXDB_PORT, username=IN
         ## Check if SPEEDTEST_SERVER_ID has been provided, if so, use the server ID
         if SPEEDTEST_SERVER_ID:
             print(f"Running speedtest with server ID: {SPEEDTEST_SERVER_ID}.")
-            process = subprocess.Popen(["./librespeed", f"--server {SPEEDTEST_SERVER_ID}", "--json"], stdout=subprocess.PIPE)
+            process = subprocess.Popen(["./librespeed", f"--server {SPEEDTEST_SERVER_ID}", "--telemetry-level disabled", "--json"], stdout=subprocess.PIPE)
         else:
             print(f"Running speedtest.")
-            process = subprocess.Popen(["./librespeed", "--json"], stdout=subprocess.PIPE)
+            process = subprocess.Popen(["./librespeed", "--telemetry-level disabled", "--json"], stdout=subprocess.PIPE)
         # Wait for speedtest to finish
         result, err = process.communicate()
         exit_code = process.wait()

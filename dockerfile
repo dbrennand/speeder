@@ -20,4 +20,4 @@ WORKDIR /
 # Copy librespeed binary to Python alpine image to reduce size
 COPY --from=build /speedtest-cli/librespeed .
 # Run script
-CMD ["python", "speed.py"]
+CMD ["python", "-u", "speed.py"]

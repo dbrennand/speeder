@@ -4,7 +4,9 @@ services:
     image: influxdb:1.8-alpine
     container_name: influxdb
     ports:
-      - "${INFLUXDB_HOST}:${INFLUXDB_PORT}:${INFLUXDB_PORT}"
+      - "127.0.0.1:${INFLUXDB_PORT}:${INFLUXDB_PORT}"
+    networks:
+      - librespeed-grafana
     volumes:
       - influxdb:/var/lib/influxdb
     restart: always
@@ -16,15 +18,23 @@ services:
       - "INFLUXDB_USER_PASSWORD=${INFLUXDB_USER_PASSWORD}"
   librespeed-grafana:
     build: .
-    container_name: librespeed-grafana:0.0.1
-    depends_on: influxdb
+    image: librespeed-grafana:0.0.1
+    container_name: librespeed-grafana
+    depends_on:
+      - influxdb
+    networks:
+      - librespeed-grafana
     environment:
       - "SPEEDTEST_INTERVAL=${SPEEDTEST_INTERVAL}"
       - "SPEEDTEST_SERVER_ID=${SPEEDTEST_SERVER_ID}"
       - "INFLUXDB_HOST=${INFLUXDB_HOST}"
+      - "INFLUXDB_PORT=${INFLUXDB_PORT}"
       - "INFLUXDB_DB=${INFLUXDB_DB}"
       - "INFLUXDB_USER=${INFLUXDB_USER}"
       - "INFLUXDB_USER_PASSWORD=${INFLUXDB_USER_PASSWORD}"
 
 volumes:
   influxdb: {}
+
+networks:
+  librespeed-grafana:

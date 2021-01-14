@@ -22,7 +22,7 @@ with influxdb.InfluxDBClient(host=INFLUXDB_HOST, port=INFLUXDB_PORT, username=IN
     # Run the speedtest using the LibreSpeed CLI on a set interval
     while True:
         # Run the speedtest using the LibreSpeed CLI
-        ## Check if SERVER_ID has been provided, if so, use the server ID
+        ## Check if SPEEDTEST_SERVER_ID has been provided, if so, use the server ID
         if SPEEDTEST_SERVER_ID:
             print(f"Running speedtest with server ID: {SPEEDTEST_SERVER_ID}.")
             process = subprocess.Popen(["./librespeed", f"--server {SPEEDTEST_SERVER_ID}", "--json"], stdout=subprocess.PIPE)
@@ -34,10 +34,10 @@ with influxdb.InfluxDBClient(host=INFLUXDB_HOST, port=INFLUXDB_PORT, username=IN
         exit_code = process.wait()
         # Check if speedtest failed
         if exit_code not 0:
-            # speedtest failed
+            # Speedtest failed
             print(f"Speedtest failed with exit code: {exit_code}.\nError: {err.decode('utf-8')}")
         else:
-            # speedtest succeeded
+            # Speedtest succeeded
             print(f"Speedtest succeeded. Parsing JSON and writing results to InfluxDB database: {INFLUXDB_DB_NAME}.")
             # Load and parse JSON results
             json_result = json.loads(result.decode('utf-8'))
@@ -67,7 +67,7 @@ with influxdb.InfluxDBClient(host=INFLUXDB_HOST, port=INFLUXDB_PORT, username=IN
                 }
             ]
             # Write results to InfluxDB
-            print(f"Write results: {json_body}")
+            print(f"Writing results to InfluxDB database: {json_body}")
             influx.write_points(json_body)
         # Sleep on the specified interval
         time.sleep(SPEEDTEST_INTERVAL)

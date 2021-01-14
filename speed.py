@@ -12,13 +12,13 @@ SPEEDTEST_INTERVAL = os.environ.get("SPEEDTEST_INTERVAL", 1800) # Default: 30 mi
 SPEEDTEST_SERVER_ID = os.environ.get("SPEEDTEST_SERVER_ID", None)
 ## InfluxDB environment variables
 INFLUXDB_HOST = os.environ.get("INFLUXDB_HOST", "127.0.0.1")
-INFLUXDB_PORT = os.environ.ge("INFLUXDB_PORT", 8086)
-INFLUXDB_USERNAME = os.environ.ge("INFLUXDB_USERNAME", "root")
-INFLUXDB_PASSWORD = os.environ.ge("INFLUXDB_PASSWORD", "root")
-INFLUXDB_DB_NAME = os.environ.ge("INFLUXDB_DB_NAME", "internet_speed")
+INFLUXDB_PORT = os.environ.get("INFLUXDB_PORT", 8086)
+INFLUXDB_USER = os.environ.get("INFLUXDB_USER", "root")
+INFLUXDB_USER_PASSWORD = os.environ.get("INFLUXDB_USER_PASSWORD", "root")
+INFLUXDB_DB = os.environ.get("INFLUXDB_DB", "internet_speed")
 
 # Connect to the InfluxDB database using a context manager
-with influxdb.InfluxDBClient(host=INFLUXDB_HOST, port=INFLUXDB_PORT, username=INFLUXDB_USERNAME, password=INFLUXDB_PASSWORD, database=INFLUXDB_DB_NAME) as influx:
+with influxdb.InfluxDBClient(host=INFLUXDB_HOST, port=INFLUXDB_PORT, username=INFLUXDB_USER, password=INFLUXDB_USER_PASSWORD, database=INFLUXDB_DB) as influx:
     # Run the speedtest using the LibreSpeed CLI on a set interval
     while True:
         # Run the speedtest using the LibreSpeed CLI
@@ -32,7 +32,7 @@ with influxdb.InfluxDBClient(host=INFLUXDB_HOST, port=INFLUXDB_PORT, username=IN
                 print(f"Speedtest failed with exit code: {result.returncode}.\nError: {result.stderr.decode('utf-8')}")
             else:
                 # Speedtest succeeded
-                print(f"Speedtest succeeded. Parsing JSON and writing results to InfluxDB database: {INFLUXDB_DB_NAME}.")
+                print(f"Speedtest succeeded. Parsing JSON and writing results to InfluxDB database: {INFLUXDB_DB}.")
                 # Load and parse JSON results
                 json_result = json.loads(result.stdout.decode("utf-8"))
                 # Write InfluxDB result

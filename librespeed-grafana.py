@@ -11,7 +11,7 @@ logger.debug(f"Starting librespeed-grafana version: {__version__}.")
 
 # Retrieve environment variables, if not found, use defaults
 ## LibreSpeed CLI environment variables
-SPEEDTEST_INTERVAL = int(os.environ.get("SPEEDTEST_INTERVAL", 1800))  # 30 minutes
+SPEEDTEST_INTERVAL = int(os.environ.get("SPEEDTEST_INTERVAL", 300))  # 5 minutes
 SPEEDTEST_SERVER_ID = str(os.environ.get("SPEEDTEST_SERVER_ID", None))
 ## InfluxDB environment variables
 INFLUXDB_HOST = os.environ.get("INFLUXDB_HOST", "influxdb")

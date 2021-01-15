@@ -1,0 +1,11 @@
+# https://grafana.com/docs/grafana/latest/administration/provisioning/
+apiVersion: 1
+
+providers:
+- name: LibreSpeed Speedtest
+  folder: LibreSpeed Speedtest
+  type: file
+  disableDeletion: false
+  editable: true
+  options:
+    path: /etc/grafana/provisioning/dashboards

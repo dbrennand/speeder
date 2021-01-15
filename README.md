@@ -42,7 +42,7 @@ Use [LibreSpeed-CLI](https://github.com/librespeed/speedtest-cli), [InfluxDB](ht
 
 ## Disclaimer
 
-I did **not** create the LibreSpeed project or CLI. The great folks over at [LibreSpeed](https://github.com/librespeed) did.
+I did **NOT** create the LibreSpeed project or CLI. The great folks over at [LibreSpeed](https://github.com/librespeed) did.
 
 If you like this project then please give their repositories a star! ⭐
 

@@ -1,0 +1,48 @@
+version: "3.9"
+services:
+  influxdb:
+    image: influxdb:1.8-alpine
+    container_name: influxdb
+    expose:
+      - 8086
+    volumes:
+      - influxdb:/var/lib/influxdb
+    restart: always
+    environment:
+      - "INFLUXDB_GRAPHITE_ENABLED=${INFLUXDB_GRAPHITE_ENABLED}"
+      - "INFLUXDB_REPORTING_DISABLED=${INFLUXDB_REPORTING_DISABLED}"
+      - "INFLUXDB_DB=internet_speed"
+      - "INFLUXDB_USER=${INFLUXDB_USER}"
+      - "INFLUXDB_USER_PASSWORD=${INFLUXDB_USER_PASSWORD}"
+  librespeed-grafana:
+    build: .
+    image: librespeed-grafana:0.0.1
+    container_name: librespeed-grafana
+    depends_on:
+      - influxdb
+    environment:
+      - "SPEEDTEST_INTERVAL=${SPEEDTEST_INTERVAL}"
+      - "SPEEDTEST_SERVER_ID=${SPEEDTEST_SERVER_ID}"
+      - "INFLUXDB_HOST=influxdb"
+      - "INFLUXDB_PORT=8086"
+      - "INFLUXDB_DB=internet_speed"
+      - "INFLUXDB_USER=${INFLUXDB_USER}"
+      - "INFLUXDB_USER_PASSWORD=${INFLUXDB_USER_PASSWORD}"
+  grafana:
+    image: grafana/grafana:7.3.7
+    container_name: grafana
+    ports:
+      - 3000:3000
+    volumes:
+      - grafana-storage:/var/lib/grafana
+      - ./grafana-config/:/etc/grafana/provisioning
+    depends_on:
+      - influxdb
+      - librespeed-grafana
+    environment:
+      - "GF_SECURITY_ADMIN_USER=${GF_SECURITY_ADMIN_USER}"
+      - "GF_SECURITY_ADMIn_PASSWORD=${GF_SECURITY_ADMIn_PASSWORD}"
+
+volumes:
+  influxdb:
+  grafana-storage:

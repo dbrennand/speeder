@@ -15,9 +15,9 @@ FROM python:3.9-alpine
 COPY requirements.txt /
 RUN pip install --no-cache-dir -r /requirements.txt
 # Copy main script
-COPY speed.py /
+COPY librespeed-grafana.py /
 WORKDIR /
 # Copy librespeed binary to Python alpine image to reduce size
 COPY --from=build /speedtest-cli/librespeed .
 # Run script
-CMD ["python", "-u", "speed.py"]
+CMD ["python", "librespeed-grafana.py"]

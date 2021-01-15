@@ -1,3 +1,4 @@
+from loguru import logger
 import os
 import influxdb
 import subprocess
@@ -6,40 +7,43 @@ import time
 
 __version__ = "0.0.1"
 
+logger.debug(f"Starting librespeed-grafana version: {__version__}.")
+
 # Retrieve environment variables, if not found, use defaults
 ## LibreSpeed CLI environment variables
-SPEEDTEST_INTERVAL = int(os.environ.get("SPEEDTEST_INTERVAL", 1800)) # Default: 30 minutes
+SPEEDTEST_INTERVAL = int(os.environ.get("SPEEDTEST_INTERVAL", 1800)) # 30 minutes
 SPEEDTEST_SERVER_ID = str(os.environ.get("SPEEDTEST_SERVER_ID", None))
 ## InfluxDB environment variables
-INFLUXDB_HOST = os.environ.get("INFLUXDB_HOST", "127.0.0.1")
+INFLUXDB_HOST = os.environ.get("INFLUXDB_HOST", "influxdb")
 INFLUXDB_PORT = int(os.environ.get("INFLUXDB_PORT", 8086))
 INFLUXDB_USER = os.environ.get("INFLUXDB_USER", "root")
 INFLUXDB_USER_PASSWORD = os.environ.get("INFLUXDB_USER_PASSWORD", "root")
 INFLUXDB_DB = os.environ.get("INFLUXDB_DB", "internet_speed")
 
-# Check if SPEEDTEST_SERVER_ID has not been provided
+# Check if SPEEDTEST_SERVER_ID environment variable has not been provided
 if not SPEEDTEST_SERVER_ID:
-    print("Provide a server ID. List of servers below.")
+    logger.debug("SPEEDTEST_SERVER_ID environment variable has no server ID. Choose from the list below and set the environment variable.")
     servers = subprocess.run(["/librespeed", "--list"], capture_output=True, text=True)
-    print(servers.stdout)
+    logger.debug(servers.stdout)
     exit()
 
-# Connect to the InfluxDB database using a context manager
-print("Connecting to InfluxDB.")
+# Connect to InfluxDB
+logger.debug(f"Connecting to InfluxDB using host: {INFLUXDB_HOST}, port: {INFLUXDB_PORT}, username: {INFLUXDB_USER}, database name: {INFLUXDB_DB}.")
 influx = influxdb.InfluxDBClient(host=INFLUXDB_HOST, port=INFLUXDB_PORT, username=INFLUXDB_USER, password=INFLUXDB_USER_PASSWORD, database=INFLUXDB_DB, retries=0)
-# Run the speedtest using the LibreSpeed CLI on a set interval
+
+# Run the speedtest using the LibreSpeed CLI on an interval
 while True:
     # Run the speedtest using the LibreSpeed CLI
-    print(f"Running speedtest with server ID: {SPEEDTEST_SERVER_ID}.")
+    logger.debug(f"Running speedtest with server ID: {SPEEDTEST_SERVER_ID} and telemetry disabled.")
     result = subprocess.run(["/librespeed", "--server", SPEEDTEST_SERVER_ID, "--telemetry-level", "disabled", "--json"], capture_output=True, text=True)
     # Check if speedtest failed
     if result.returncode != 0:
         # Speedtest failed
         # CLI errors go to stdout
-        print(f"Speedtest failed with exit code: {result.returncode}.\nError: {result.stdout}")
+        logger.debug(f"Speedtest failed with exit code: {result.returncode}.\nError: {result.stdout}")
     else:
         # Speedtest succeeded
-        print(f"Speedtest succeeded. Parsing JSON and writing results to InfluxDB database: {INFLUXDB_DB}.")
+        logger.debug(f"Speedtest succeeded. Parsing JSON results.")
         # Load and parse JSON results
         json_result = json.loads(result.stdout)
         # Create InfluxDB JSON body
@@ -69,7 +73,7 @@ while True:
             }
         ]
         # Write results to InfluxDB
-        print(f"Writing results to InfluxDB database: {json_body}")
+        logger.debug(f"Writing results to InfluxDB database: {INFLUXDB_DB}.\nResults: {json_body}")
         influx.write_points(json_body)
     # Sleep on the specified interval
     time.sleep(SPEEDTEST_INTERVAL)

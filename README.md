@@ -38,7 +38,7 @@ Use [LibreSpeed-CLI](https://github.com/librespeed/speedtest-cli), [InfluxDB](ht
 
 4. Start the containers using the command: `docker-compose up -d`
 
-5. Access Grafana at `http://localhost:3000`
+5. Access Grafana at [`http://localhost:3000`](http://localhost:3000)
 
 ## Disclaimer
 

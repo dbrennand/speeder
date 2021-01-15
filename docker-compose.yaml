@@ -5,8 +5,6 @@ services:
     container_name: influxdb
     expose:
       - "${INFLUXDB_PORT}"
-    networks:
-      - librespeed-grafana
     volumes:
       - influxdb:/var/lib/influxdb
     restart: always
@@ -22,8 +20,6 @@ services:
     container_name: librespeed-grafana
     depends_on:
       - influxdb
-    networks:
-      - librespeed-grafana
     environment:
       - "SPEEDTEST_INTERVAL=${SPEEDTEST_INTERVAL}"
       - "SPEEDTEST_SERVER_ID=${SPEEDTEST_SERVER_ID}"
@@ -34,7 +30,4 @@ services:
       - "INFLUXDB_USER_PASSWORD=${INFLUXDB_USER_PASSWORD}"
 
 volumes:
-  influxdb: {}
-
-networks:
-  librespeed-grafana:
+  influxdb:

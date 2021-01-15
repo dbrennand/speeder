@@ -18,14 +18,16 @@ Use [LibreSpeed-CLI](https://github.com/librespeed/speedtest-cli), [InfluxDB](ht
 2. Set the `SPEEDTEST_SERVER_ID` environment variable located in the [.env](.env) file to the server ID to perform speedtests against.
 
     > [!NOTE]
+    >
     > If you don't know any server IDs, run the following command and they will be shown: `docker run --rm -it librespeed-grafana:0.0.1 /librespeed --list`
 
 3. Modify any other environment variables located in the [.env](.env) file.
 
     > [!WARNING]
+    >
     > It is **highly** recommended that you change the default usernames and passwords!
     >
-    > When modifying the `INFLUXDB_USER` and `INFLUXDB_USER_PASSWORD` environment variables. Make sure you modify them also in [datasource.yml](/grafana-config/datasources/datasource.yml)
+    > When modifying the `INFLUXDB_USER` and `INFLUXDB_USER_PASSWORD` environment variables. Make sure you modify them also in [datasource.yml](/grafana-config/datasources/datasource.yml):
     >
     > ```yaml
     > # You SHOULD change these!

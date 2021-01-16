@@ -15,7 +15,6 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 1,
   "links": [],
   "panels": [
     {
@@ -635,7 +634,12 @@
       "id": 8,
       "options": {
         "showHeader": true,
-        "sortBy": []
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Speedtest Datetime"
+          }
+        ]
       },
       "pluginVersion": "7.3.7",
       "targets": [

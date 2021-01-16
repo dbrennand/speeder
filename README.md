@@ -40,6 +40,10 @@ Use [LibreSpeed-CLI](https://github.com/librespeed/speedtest-cli), [InfluxDB](ht
 
 5. Access Grafana at [`http://localhost:3000`](http://localhost:3000)
 
+    > [!NOTE]
+    >
+    > You should also be able to access Grafana from your host's IP address.
+
 ## Disclaimer
 
 I did **NOT** create the LibreSpeed project or CLI. The great folks over at [LibreSpeed](https://github.com/librespeed) did.

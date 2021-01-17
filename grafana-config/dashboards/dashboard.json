@@ -719,7 +719,7 @@
               "country": "Country",
               "download": "Download Speed",
               "hostname": "Hostname",
-              "ip": "IP Address",
+              "ip": "Public IP Address",
               "jitter": "Jitter",
               "org": "Organisation",
               "ping": "Ping",

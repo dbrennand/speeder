@@ -7,13 +7,12 @@ import time
 
 __version__ = "0.0.1"
 
-logger.debug(f"Starting librespeed-grafana version: {__version__}.")
+logger.debug(f"Starting speedtest-grafana version: {__version__}.")
 
-# Retrieve environment variables, if not found, use defaults
-## LibreSpeed CLI environment variables
+# Retrieve environment variables
+# If not found, use defaults
 SPEEDTEST_INTERVAL = int(os.environ.get("SPEEDTEST_INTERVAL", 300))  # 5 minutes
 SPEEDTEST_SERVER_ID = os.environ.get("SPEEDTEST_SERVER_ID", None)
-## InfluxDB environment variables
 INFLUXDB_HOST = os.environ.get("INFLUXDB_HOST", "influxdb")
 INFLUXDB_PORT = int(os.environ.get("INFLUXDB_PORT", 8086))
 INFLUXDB_USER = os.environ.get("INFLUXDB_USER", "root")
@@ -42,9 +41,8 @@ influx = influxdb.InfluxDBClient(
     retries=0,
 )
 
-# Run the speedtest using the LibreSpeed CLI on an interval
+# Run the speedtest using the librespeed/speedtest-cli on an interval
 while True:
-    # Run the speedtest using the LibreSpeed CLI
     logger.debug(
         f"Running speedtest with server ID: {SPEEDTEST_SERVER_ID} and telemetry disabled."
     )

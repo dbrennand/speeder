@@ -1,6 +1,6 @@
-# librespeed-grafana
+# Speedtest-grafana
 
-Use [LibreSpeed-CLI](https://github.com/librespeed/speedtest-cli), [InfluxDB](https://www.influxdata.com/products/influxdb/) and [Grafana](https://grafana.com/) to monitor your internet speed! 🚀
+Use [Grafana](https://grafana.com/), [InfluxDB](https://www.influxdata.com/products/influxdb/) and the [librespeed/speedtest-cli](https://github.com/librespeed/speedtest-cli) to monitor your internet speed! 🚀
 
 ## Prerequisites
 
@@ -11,15 +11,16 @@ Use [LibreSpeed-CLI](https://github.com/librespeed/speedtest-cli), [InfluxDB](ht
 ## Usage
 
 > [!NOTE]
+>
 > Make sure you run the commands below from the project directory.
 
-1. Build the librespeed-grafana container image using the command: `docker-compose build`
+1. Build the speedtest-grafana container image using the command: `docker-compose build`
 
 2. Set the `SPEEDTEST_SERVER_ID` environment variable located in the [.env](.env) file to the server ID to perform speedtests against.
 
     > [!NOTE]
     >
-    > If you don't know any server IDs, run the following command and they will be shown: `docker run --rm -it librespeed-grafana:0.0.1 /librespeed --list`
+    > If you don't know any server IDs, run the following command and they will be shown: `docker run --rm -it speedtest-grafana:0.0.1 /librespeed --list`
 
 3. Modify any other environment variables located in the [.env](.env) file.
 
@@ -27,7 +28,7 @@ Use [LibreSpeed-CLI](https://github.com/librespeed/speedtest-cli), [InfluxDB](ht
     >
     > It is **highly** recommended that you change the default usernames and passwords!
     >
-    > When modifying the `INFLUXDB_USER` and `INFLUXDB_USER_PASSWORD` environment variables. Make sure you modify them also in [datasource.yml](/grafana-config/datasources/datasource.yml):
+    > When modifying the `INFLUXDB_USER` and `INFLUXDB_USER_PASSWORD` environment variables. Make sure you also modify them in [datasource.yml](/grafana-config/datasources/datasource.yml):
     >
     > ```yaml
     > # You SHOULD change these!

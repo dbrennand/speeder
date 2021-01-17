@@ -1,23 +1,22 @@
 FROM golang:alpine as build
 # Set working directory
 WORKDIR /
-# Required to clone librespeed-cli repo and install GCC to build the CLI
-RUN apk add --no-cache build-base git
-# Clone librespeed-cli repo
+# Required to clone the librespeed/speedtest-cli repo and install GCC to build the CLI
+RUN apk add --no-cache git build-base
+# Clone the librespeed/speedtest-cli repo
 RUN git clone https://github.com/librespeed/speedtest-cli.git
 WORKDIR /speedtest-cli
-# Build the CLI binary
+# Build the librespeed CLI binary
 RUN go build -o librespeed main.go
 
-# Setup Python dependencies
 FROM python:3.9-alpine
-# Copy requirements.txt and install dependencies
+# Copy requirements.txt and install Python dependencies
 COPY requirements.txt /
 RUN pip install --no-cache-dir -r /requirements.txt
-# Copy main script
-COPY librespeed-grafana.py /
+# Copy speedtest script
+COPY speedtest.py /
 WORKDIR /
-# Copy librespeed binary to Python alpine image to reduce size
+# Copy the librespeed CLI binary to the Python alpine image to reduce size
 COPY --from=build /speedtest-cli/librespeed .
-# Run script
-CMD ["python", "librespeed-grafana.py"]
+# Run speedtest script
+CMD ["python", "speedtest.py"]

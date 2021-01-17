@@ -14,10 +14,10 @@ services:
       - "INFLUXDB_DB=internet_speed"
       - "INFLUXDB_USER=${INFLUXDB_USER}"
       - "INFLUXDB_USER_PASSWORD=${INFLUXDB_USER_PASSWORD}"
-  librespeed-grafana:
+  speedtest-grafana:
     build: .
-    image: librespeed-grafana:0.0.1
-    container_name: librespeed-grafana
+    image: speedtest-grafana:0.0.1
+    container_name: speedtest-grafana
     depends_on:
       - influxdb
     environment:
@@ -38,7 +38,7 @@ services:
       - ./grafana-config/:/etc/grafana/provisioning
     depends_on:
       - influxdb
-      - librespeed-grafana
+      - speedtest-grafana
     environment:
       - "GF_SECURITY_ADMIN_USER=${GF_SECURITY_ADMIN_USER}"
       - "GF_SECURITY_ADMIn_PASSWORD=${GF_SECURITY_ADMIn_PASSWORD}"

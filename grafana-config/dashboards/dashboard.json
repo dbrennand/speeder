@@ -683,7 +683,7 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "LibreSpeed Speedtest Details",
+      "title": "Speedtest Details",
       "transformations": [
         {
           "id": "organize",
@@ -748,7 +748,7 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "LibreSpeed Speedtest Results",
+  "title": "Speedtest Results",
   "uid": "ll6ARVfGk",
   "version": 14
 }

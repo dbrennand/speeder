@@ -37,6 +37,10 @@ Use [Grafana](https://grafana.com/), [InfluxDB](https://www.influxdata.com/produ
     >   password: root
     > ```
 
+    > [!NOTE]
+    >
+    > If you intend to run this project on a Raspberry Pi, make sure you alter the `INFLUXDB_IMAGE_TAG` to `1.8.3`.
+
 4. Start the containers using the command: `docker-compose up -d`
 
 5. Access Grafana at [`http://localhost:3000`](http://localhost:3000)

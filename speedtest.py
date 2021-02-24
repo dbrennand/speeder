@@ -5,7 +5,7 @@ import subprocess
 import json
 import time
 
-__version__ = "0.0.1"
+__version__ = "0.0.2"
 
 logger.debug(f"Starting speedtest-grafana version: {__version__}.")
 
@@ -68,8 +68,12 @@ while True:
     else:
         # Speedtest succeeded
         logger.debug(f"Speedtest succeeded. Parsing JSON results.")
-        # Load and parse JSON results
-        json_result = json.loads(result.stdout)
+        # Parse JSON results
+        try:
+            json_result = json.loads(result.stdout)
+        except json.decoder.JSONDecodeError as err:
+            logger.debug(f"Failed to parse JSON results.\nError: {err}")
+            continue
         # Create InfluxDB JSON body
         json_body = [
             {

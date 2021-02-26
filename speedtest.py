@@ -73,6 +73,9 @@ while True:
             json_result = json.loads(result.stdout)
         except json.decoder.JSONDecodeError as err:
             logger.debug(f"Failed to parse JSON results.\nError: {err}")
+            logger.debug(f"Sleeping for {SPEEDTEST_INTERVAL} seconds.")
+            # Sleep on the specified interval
+            time.sleep(SPEEDTEST_INTERVAL)
             continue
         # Create InfluxDB JSON body
         json_body = [

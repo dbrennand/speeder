@@ -16,7 +16,7 @@ services:
       - "INFLUXDB_USER_PASSWORD=${INFLUXDB_USER_PASSWORD}"
   speedtest-grafana:
     build: .
-    image: speedtest-grafana:0.0.1
+    image: speedtest-grafana:0.0.2
     container_name: speedtest-grafana
     depends_on:
       - influxdb

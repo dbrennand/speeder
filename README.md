@@ -20,7 +20,7 @@ Use [Grafana](https://grafana.com/), [InfluxDB](https://www.influxdata.com/produ
 
     > [!NOTE]
     >
-    > If you don't know any server IDs, run the following command and they will be shown: `docker run --rm -it speedtest-grafana:0.0.1 /librespeed --list`
+    > If you don't know any server IDs, run the following command and they will be shown: `docker run --rm -it speedtest-grafana:0.0.2 /librespeed --list`
 
 3. Modify any other environment variables located in the [.env](.env) file.
 

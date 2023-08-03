@@ -1,17 +1,16 @@
 # https://grafana.com/docs/grafana/latest/administration/provisioning/
-# config file version
+# https://grafana.com/docs/grafana/latest/datasources/influxdb/
 apiVersion: 1
 
 datasources:
-- name: InfluxDB
-  type: influxdb
-  access: proxy
-  database: internet_speed
-  url: http://influxdb:8086
-  version: 1
-  isDefault: true
-  editable: false
-  # You SHOULD change these!
-  user: root
-  secureJsonData:
-    password: root
+  - name: InfluxDB_v2_Flux
+    type: influxdb
+    access: proxy
+    url: http://influxdb:8086
+    jsonData:
+      version: Flux
+      organization: ${INFLUXDB_ORG}
+      defaultBucket: ${INFLUXDB_BUCKET}
+      tlsSkipVerify: true
+    secureJsonData:
+      token: ${INFLUXDB_USER}:${INFLUXDB_USER_PASSWORD}

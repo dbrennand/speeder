@@ -6,7 +6,7 @@ Use [Grafana](https://grafana.com/), [InfluxDB](https://www.influxdata.com/produ
 
 1. Docker
 
-2. docker-compose
+2. Docker Compose
 
 ## Usage
 
@@ -20,26 +20,13 @@ Use [Grafana](https://grafana.com/), [InfluxDB](https://www.influxdata.com/produ
 
     > [!NOTE]
     >
-    > If you don't know any server IDs, run the following command and they will be shown: `docker run --rm -it speedtest-grafana:0.0.2 /librespeed --list`
+    > If you don't know any server IDs, run the following command and they will be shown: `docker run --rm -it speedtest-grafana:1.0.0 /librespeed --list`
 
 3. Modify any other environment variables located in the [.env](.env) file.
 
     > [!WARNING]
     >
     > It is **highly** recommended that you change the default usernames and passwords!
-    >
-    > When modifying the `INFLUXDB_USER` and `INFLUXDB_USER_PASSWORD` environment variables. Make sure you also modify them in [datasource.yml](/grafana-config/datasources/datasource.yml):
-    >
-    > ```yaml
-    > # You SHOULD change these!
-    > user: root
-    > secureJsonData:
-    >   password: root
-    > ```
-
-    > [!NOTE]
-    >
-    > If you intend to run this project on a Raspberry Pi, make sure you alter the `INFLUXDB_IMAGE_TAG` to `1.8.3`.
 
 4. Start the containers using the command: `docker-compose up -d`
 

@@ -7,10 +7,11 @@ datasources:
     type: influxdb
     access: proxy
     url: http://influxdb:8086
+    isDefault: true
     jsonData:
       version: Flux
       organization: ${INFLUXDB_ORG}
       defaultBucket: ${INFLUXDB_BUCKET}
       tlsSkipVerify: true
     secureJsonData:
-      token: ${INFLUXDB_USER}:${INFLUXDB_USER_PASSWORD}
+      token: ${INFLUXDB_TOKEN}

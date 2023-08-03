@@ -39,8 +39,7 @@ SPEEDTEST_INTERVAL = int(os.environ.get("SPEEDTEST_INTERVAL", 300))  # 5 minutes
 SPEEDTEST_SERVER_ID = os.environ.get("SPEEDTEST_SERVER_ID", None)
 INFLUXDB_HOST = os.environ.get("INFLUXDB_HOST", "influxdb")
 INFLUXDB_PORT = int(os.environ.get("INFLUXDB_PORT", 8086))
-INFLUXDB_USER = os.environ.get("INFLUXDB_USER", "root")
-INFLUXDB_USER_PASSWORD = os.environ.get("INFLUXDB_USER_PASSWORD", "root")
+INFLUXDB_TOKEN = os.environ.get("INFLUXDB_TOKEN", "root")
 INFLUXDB_ORG = os.environ.get("INFLUXDB_ORG", "internet_speed")
 INFLUXDB_BUCKET = os.environ.get("INFLUXDB_BUCKET", "internet_speed")
 
@@ -55,11 +54,11 @@ if not SPEEDTEST_SERVER_ID:
 
 # Connect to InfluxDB
 logger.debug(
-    f"Connecting to InfluxDB {INFLUXDB_HOST}:{INFLUXDB_PORT}, username: {INFLUXDB_USER}, bucket: {INFLUXDB_BUCKET}."
+    f"Connecting to InfluxDB {INFLUXDB_HOST}:{INFLUXDB_PORT}, bucket: {INFLUXDB_BUCKET}."
 )
 with InfluxDBClient(
     url=f"http://{INFLUXDB_HOST}:{INFLUXDB_PORT}",
-    token=f"{INFLUXDB_USER}:{INFLUXDB_USER_PASSWORD}",
+    token=INFLUXDB_TOKEN,
     org=INFLUXDB_ORG,
 ) as client:
     # Run the speedtest using the librespeed/speedtest-cli on an interval

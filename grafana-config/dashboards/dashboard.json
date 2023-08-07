@@ -35,6 +35,7 @@
           "custom": {
             "axisCenteredZero": false,
             "axisColorMode": "text",
+            "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -77,7 +78,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "upload {server_name=\"London, England (Clouvider)\", server_url=\"http://lon.speedtest.clouvider.net/backend\"}"
+              "options": "upload"
             },
             "properties": [
               {
@@ -89,7 +90,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "download {server_name=\"London, England (Clouvider)\", server_url=\"http://lon.speedtest.clouvider.net/backend\"}"
+              "options": "download"
             },
             "properties": [
               {
@@ -148,7 +149,7 @@
           "measurement": "internet_speed",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: \"internet_speed\")\n    |> range(start: -1h)\n    |> filter(fn: (r) => \n      r._measurement == \"internet_speed\" and\n      r._field == \"upload\"\n    )",
+          "query": "from(bucket: \"internet_speed\")\n    |> range(start: -1h)\n    |> filter(fn: (r) => \n      r._measurement == \"internet_speed\" and\n      r._field == \"upload\"\n    )\n    |> drop(columns: [\"server_name\", \"server_url\"])",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -197,7 +198,7 @@
             "uid": "P5697886F9CA74929"
           },
           "hide": false,
-          "query": "from(bucket: \"internet_speed\")\n    |> range(start: -1h)\n    |> filter(fn: (r) => \n      r._measurement == \"internet_speed\" and\n      r._field == \"download\"\n    )",
+          "query": "from(bucket: \"internet_speed\")\n    |> range(start: -1h)\n    |> filter(fn: (r) => \n      r._measurement == \"internet_speed\" and\n      r._field == \"download\"\n    )\n    |> drop(columns: [\"server_name\", \"server_url\"])",
           "refId": "B"
         }
       ],
@@ -261,7 +262,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "bytes_sent {server_name=\"London, England (Clouvider)\", server_url=\"http://lon.speedtest.clouvider.net/backend\"}"
+              "options": "bytes_sent"
             },
             "properties": [
               {
@@ -273,7 +274,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "bytes_received {server_name=\"London, England (Clouvider)\", server_url=\"http://lon.speedtest.clouvider.net/backend\"}"
+              "options": "bytes_received"
             },
             "properties": [
               {
@@ -332,7 +333,7 @@
           "measurement": "internet_speed",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: \"internet_speed\")\n    |> range(start: -1h)\n    |> filter(fn: (r) => \n      r._measurement == \"internet_speed\" and\n      r._field == \"bytes_sent\"\n    )",
+          "query": "from(bucket: \"internet_speed\")\n    |> range(start: -1h)\n    |> filter(fn: (r) => \n      r._measurement == \"internet_speed\" and\n      r._field == \"bytes_sent\"\n    )\n    |> drop(columns: [\"server_name\", \"server_url\"])",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -381,7 +382,7 @@
             "uid": "P5697886F9CA74929"
           },
           "hide": false,
-          "query": "from(bucket: \"internet_speed\")\n    |> range(start: -1h)\n    |> filter(fn: (r) => \n      r._measurement == \"internet_speed\" and\n      r._field == \"bytes_received\"\n    )",
+          "query": "from(bucket: \"internet_speed\")\n    |> range(start: -1h)\n    |> filter(fn: (r) => \n      r._measurement == \"internet_speed\" and\n      r._field == \"bytes_received\"\n    )\n    |> drop(columns: [\"server_name\", \"server_url\"])",
           "refId": "B"
         }
       ],
@@ -444,7 +445,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "ping {server_name=\"London, England (Clouvider)\", server_url=\"http://lon.speedtest.clouvider.net/backend\"}"
+              "options": "ping"
             },
             "properties": [
               {
@@ -456,7 +457,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "jitter {server_name=\"London, England (Clouvider)\", server_url=\"http://lon.speedtest.clouvider.net/backend\"}"
+              "options": "jitter"
             },
             "properties": [
               {
@@ -515,7 +516,7 @@
           "measurement": "internet_speed",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: \"internet_speed\")\n    |> range(start: -1h)\n    |> filter(fn: (r) => \n      r._measurement == \"internet_speed\" and\n      r._field == \"ping\"\n    )",
+          "query": "from(bucket: \"internet_speed\")\n    |> range(start: -1h)\n    |> filter(fn: (r) => \n      r._measurement == \"internet_speed\" and\n      r._field == \"ping\"\n    )\n    |> drop(columns: [\"server_name\", \"server_url\"])",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -564,7 +565,7 @@
             "uid": "P5697886F9CA74929"
           },
           "hide": false,
-          "query": "from(bucket: \"internet_speed\")\n    |> range(start: -1h)\n    |> filter(fn: (r) => \n      r._measurement == \"internet_speed\" and\n      r._field == \"jitter\"\n    )",
+          "query": "from(bucket: \"internet_speed\")\n    |> range(start: -1h)\n    |> filter(fn: (r) => \n      r._measurement == \"internet_speed\" and\n      r._field == \"jitter\"\n    )\n    |> drop(columns: [\"server_name\", \"server_url\"])",
           "refId": "B"
         }
       ],
@@ -863,6 +864,6 @@
   "timezone": "",
   "title": "Speedtest Results",
   "uid": "ll6ARVfGk",
-  "version": 8,
+  "version": 2,
   "weekStart": ""
 }

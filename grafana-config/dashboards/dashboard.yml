@@ -6,6 +6,6 @@ providers:
   folder: Speedtest
   type: file
   disableDeletion: false
-  editable: true
+  allowUiUpdates: true
   options:
     path: /etc/grafana/provisioning/dashboards

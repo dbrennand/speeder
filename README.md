@@ -6,48 +6,38 @@ Use [Grafana](https://grafana.com/), [InfluxDB](https://www.influxdata.com/produ
 
 1. Docker
 
-2. docker-compose
+2. Docker Compose
 
 ## Usage
 
-> [!NOTE]
->
-> Make sure you run the commands below from the project directory.
+1. Build the speedtest-grafana container image:
 
-1. Build the speedtest-grafana container image using the command: `docker-compose build`
+    ```bash
+    docker compose build
+    ```
 
 2. Set the `SPEEDTEST_SERVER_ID` environment variable located in the [.env](.env) file to the server ID to perform speedtests against.
 
-    > [!NOTE]
+    > **Note**
     >
-    > If you don't know any server IDs, run the following command and they will be shown: `docker run --rm -it speedtest-grafana:0.0.2 /librespeed --list`
-
-3. Modify any other environment variables located in the [.env](.env) file.
-
-    > [!WARNING]
-    >
-    > It is **highly** recommended that you change the default usernames and passwords!
-    >
-    > When modifying the `INFLUXDB_USER` and `INFLUXDB_USER_PASSWORD` environment variables. Make sure you also modify them in [datasource.yml](/grafana-config/datasources/datasource.yml):
-    >
-    > ```yaml
-    > # You SHOULD change these!
-    > user: root
-    > secureJsonData:
-    >   password: root
+    > If you don't know any server IDs, run the following command to list them:
+    > ```bash
+    > docker run --rm -it speedtest-grafana:1.0.0 /librespeed --list
     > ```
 
-    > [!NOTE]
-    >
-    > If you intend to run this project on a Raspberry Pi, make sure you alter the `INFLUXDB_IMAGE_TAG` to `1.8.3`.
+3. Set the `DOCKER_INFLUXDB_INIT_PASSWORD`, `DOCKER_INFLUXDB_INIT_ADMIN_TOKEN` and `GF_SECURITY_ADMIN_PASSWORD` environment variables located in the [.env](.env) file.
 
-4. Start the containers using the command: `docker-compose up -d`
+4. Start the containers:
+
+    ```bash
+    docker compose up -d
+    ```
 
 5. Access Grafana at [`http://localhost:3000`](http://localhost:3000)
 
-    > [!NOTE]
+    > **Note**
     >
-    > You should also be able to access Grafana from your host's IP address.
+    > Grafana will also be available from your host's IP address.
 
 ## Disclaimer
 
@@ -57,7 +47,7 @@ If you like this project then please give their repositories a star! ⭐
 
 ## Authors -- Contributors
 
-* [**dbrennand**](https://github.com/dbrennand) - *Author*
+[**Daniel Brennand**](https://github.com/dbrennand) - *Author*
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) for details.

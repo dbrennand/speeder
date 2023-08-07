@@ -10,10 +10,6 @@ Use [Grafana](https://grafana.com/), [InfluxDB](https://www.influxdata.com/produ
 
 ## Usage
 
-> **Note**
->
-> Make sure you run the commands below from the project directory.
-
 1. Build the speedtest-grafana container image:
 
     ```bash

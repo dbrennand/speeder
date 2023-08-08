@@ -2,6 +2,8 @@
 
 Use [Grafana](https://grafana.com/), [InfluxDB](https://www.influxdata.com/products/influxdb/) and the [librespeed/speedtest-cli](https://github.com/librespeed/speedtest-cli) to monitor your internet speed! 🚀
 
+![Dashboard](images/dashboard.png)
+
 ## Prerequisites
 
 1. Docker

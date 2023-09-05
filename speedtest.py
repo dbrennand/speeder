@@ -21,56 +21,57 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
-from loguru import logger
-import os
-from influxdb_client import InfluxDBClient
 from influxdb_client.client.write_api import SYNCHRONOUS
+from influxdb_client import InfluxDBClient
+from loguru import logger
 import subprocess
+import os
 import json
 import time
 
-__version__ = "1.0.0"
+__version__ = "1.1.0"
 
-logger.debug(f"Starting speedtest-grafana version: {__version__}.")
+logger.debug(f"Starting speeder version: {__version__}.")
 
 # Retrieve environment variables
-# If not found, use defaults
-SPEEDTEST_INTERVAL = int(os.environ.get("SPEEDTEST_INTERVAL", 300))  # 5 minutes
-SPEEDTEST_SERVER_ID = os.environ.get("SPEEDTEST_SERVER_ID", None)
-INFLUXDB_HOST = os.environ.get("INFLUXDB_HOST", "influxdb")
-INFLUXDB_PORT = int(os.environ.get("INFLUXDB_PORT", 8086))
-INFLUXDB_TOKEN = os.environ.get("INFLUXDB_TOKEN", "root")
-INFLUXDB_ORG = os.environ.get("INFLUXDB_ORG", "internet_speed")
-INFLUXDB_BUCKET = os.environ.get("INFLUXDB_BUCKET", "internet_speed")
+SPEEDER_SPEEDTEST_INTERVAL = int(
+    os.environ.get("SPEEDER_SPEEDTEST_INTERVAL", 300)
+)  # 5 minutes
+SPEEDER_SPEEDTEST_SERVER_ID = os.environ.get("SPEEDER_SPEEDTEST_SERVER_ID", None)
+SPEEDER_INFLUXDB_HOST = os.environ.get("SPEEDER_INFLUXDB_HOST", "influxdb")
+SPEEDER_INFLUXDB_PORT = int(os.environ.get("SPEEDER_INFLUXDB_PORT", 8086))
+SPEEDER_INFLUXDB_TOKEN = os.environ.get("SPEEDER_INFLUXDB_TOKEN", "root")
+SPEEDER_INFLUXDB_ORG = os.environ.get("SPEEDER_INFLUXDB_ORG", "internet_speed")
+SPEEDER_INFLUXDB_BUCKET = os.environ.get("SPEEDER_INFLUXDB_BUCKET", "internet_speed")
 
-# Check if SPEEDTEST_SERVER_ID environment variable has not been provided
-if not SPEEDTEST_SERVER_ID:
+# Check environment variable has not been provided
+if not SPEEDER_SPEEDTEST_SERVER_ID:
     logger.debug(
-        "SPEEDTEST_SERVER_ID environment variable has no server ID. Choose from the list below and set the environment variable."
+        "SPEEDER_SPEEDTEST_SERVER_ID environment variable has no server ID. Choose from the list below and set the environment variable."
     )
     servers = subprocess.run(["/librespeed", "--list"], capture_output=True, text=True)
     logger.debug(servers.stdout)
-    exit()
+    exit(1)
 
 # Connect to InfluxDB
 logger.debug(
-    f"Connecting to InfluxDB {INFLUXDB_HOST}:{INFLUXDB_PORT}, bucket: {INFLUXDB_BUCKET}."
+    f"Connecting to InfluxDB {SPEEDER_INFLUXDB_HOST}:{SPEEDER_INFLUXDB_PORT}, bucket: {SPEEDER_INFLUXDB_BUCKET}."
 )
 with InfluxDBClient(
-    url=f"http://{INFLUXDB_HOST}:{INFLUXDB_PORT}",
-    token=INFLUXDB_TOKEN,
-    org=INFLUXDB_ORG,
+    url=f"http://{SPEEDER_INFLUXDB_HOST}:{SPEEDER_INFLUXDB_PORT}",
+    token=SPEEDER_INFLUXDB_TOKEN,
+    org=SPEEDER_INFLUXDB_ORG,
 ) as client:
     # Run the speedtest using the librespeed/speedtest-cli on an interval
     while True:
         logger.debug(
-            f"Running speedtest with server ID: {SPEEDTEST_SERVER_ID} and telemetry disabled."
+            f"Running speedtest with server ID: {SPEEDER_SPEEDTEST_SERVER_ID} and telemetry disabled."
         )
         result = subprocess.run(
             [
                 "/librespeed",
                 "--server",
-                SPEEDTEST_SERVER_ID,
+                SPEEDER_SPEEDTEST_SERVER_ID,
                 "--telemetry-level",
                 "disabled",
                 "--json",
@@ -93,9 +94,8 @@ with InfluxDBClient(
                 json_result = json.loads(result.stdout)
             except json.decoder.JSONDecodeError as err:
                 logger.debug(f"Failed to parse JSON results.\nError: {err}")
-                logger.debug(f"Sleeping for {SPEEDTEST_INTERVAL} seconds.")
-                # Sleep on the specified interval
-                time.sleep(SPEEDTEST_INTERVAL)
+                logger.debug(f"Sleeping for {SPEEDER_SPEEDTEST_INTERVAL} seconds.")
+                time.sleep(SPEEDER_SPEEDTEST_INTERVAL)
                 continue
             with client.write_api(write_options=SYNCHRONOUS) as write_api:
                 # Create InfluxDB record
@@ -126,9 +126,8 @@ with InfluxDBClient(
                 ]
                 # Write results to InfluxDB
                 logger.debug(
-                    f"Writing results to InfluxDB bucket: {INFLUXDB_BUCKET}.\nResults: {record}"
+                    f"Writing results to InfluxDB bucket: {SPEEDER_INFLUXDB_BUCKET}.\nResults: {record}"
                 )
-                write_api.write(bucket=INFLUXDB_BUCKET, record=record)
-        logger.debug(f"Sleeping for {SPEEDTEST_INTERVAL} seconds.")
-        # Sleep on the specified interval
-        time.sleep(SPEEDTEST_INTERVAL)
+                write_api.write(bucket=SPEEDER_INFLUXDB_BUCKET, record=record)
+        logger.debug(f"Sleeping for {SPEEDER_SPEEDTEST_INTERVAL} seconds.")
+        time.sleep(SPEEDER_SPEEDTEST_INTERVAL)

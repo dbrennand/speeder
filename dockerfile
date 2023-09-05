@@ -14,9 +14,9 @@ FROM python:3.9-alpine
 COPY requirements.txt /
 RUN pip install --no-cache-dir -r /requirements.txt
 # Copy speedtest script
-COPY speedtest.py /
+COPY speeder.py /
 WORKDIR /
 # Copy the librespeed CLI binary to the Python alpine image to reduce size
 COPY --from=build /speedtest-cli/librespeed .
 # Run speedtest script
-CMD ["python", "speedtest.py"]
+CMD ["python", "speeder.py"]

@@ -37,7 +37,7 @@ logger.debug(f"Starting speeder version: {__version__}.")
 SPEEDER_SPEEDTEST_INTERVAL = int(
     os.environ.get("SPEEDER_SPEEDTEST_INTERVAL", 300)
 )  # 5 minutes
-SPEEDER_SPEEDTEST_SERVER_ID = os.environ.get("SPEEDER_SPEEDTEST_SERVER_ID", None)
+SPEEDER_SPEEDTEST_SERVER_ID = os.environ.get("SPEEDER_SPEEDTEST_SERVER_ID", "")
 SPEEDER_INFLUXDB_HOST = os.environ.get("SPEEDER_INFLUXDB_HOST", "influxdb")
 SPEEDER_INFLUXDB_PORT = int(os.environ.get("SPEEDER_INFLUXDB_PORT", 8086))
 SPEEDER_INFLUXDB_TOKEN = os.environ.get("SPEEDER_INFLUXDB_TOKEN", "root")
@@ -47,15 +47,18 @@ SPEEDER_INFLUXDB_BUCKET = os.environ.get("SPEEDER_INFLUXDB_BUCKET", "internet_sp
 # Check environment variable has not been provided
 if not SPEEDER_SPEEDTEST_SERVER_ID:
     logger.debug(
-        "SPEEDER_SPEEDTEST_SERVER_ID environment variable has no server ID. Choose from the list below and set the environment variable."
+        "SPEEDER_SPEEDTEST_SERVER_ID environment variable has no server IDs. Choose from the list below and set the environment variable."
     )
     servers = subprocess.run(["/librespeed", "--list"], capture_output=True, text=True)
     logger.debug(servers.stdout)
     exit(1)
+else:
+    # Create list from comma separated string of server IDs
+    SPEEDER_SPEEDTEST_SERVER_ID = SPEEDER_SPEEDTEST_SERVER_ID.split(",")
 
 # Connect to InfluxDB
 logger.debug(
-    f"Connecting to InfluxDB {SPEEDER_INFLUXDB_HOST}:{SPEEDER_INFLUXDB_PORT}, bucket: {SPEEDER_INFLUXDB_BUCKET}."
+    f"Connecting to InfluxDB: {SPEEDER_INFLUXDB_HOST}:{SPEEDER_INFLUXDB_PORT} with organisation: {SPEEDER_INFLUXDB_ORG}."
 )
 with InfluxDBClient(
     url=f"http://{SPEEDER_INFLUXDB_HOST}:{SPEEDER_INFLUXDB_PORT}",
@@ -64,70 +67,65 @@ with InfluxDBClient(
 ) as client:
     # Run the speedtest using the librespeed/speedtest-cli on an interval
     while True:
-        logger.debug(
-            f"Running speedtest with server ID: {SPEEDER_SPEEDTEST_SERVER_ID} and telemetry disabled."
-        )
-        result = subprocess.run(
-            [
-                "/librespeed",
-                "--server",
-                SPEEDER_SPEEDTEST_SERVER_ID,
-                "--telemetry-level",
-                "disabled",
-                "--json",
-            ],
-            capture_output=True,
-            text=True,
-        )
-        # Check if speedtest failed
-        if result.returncode != 0:
-            # Speedtest failed
-            # CLI errors go to stdout
-            logger.debug(
-                f"Speedtest failed with exit code: {result.returncode}.\nError: {result.stdout}"
+        for server_id in SPEEDER_SPEEDTEST_SERVER_ID:
+            logger.debug(f"Running speedtest for server ID: {server_id}.")
+            result = subprocess.run(
+                [
+                    "/librespeed",
+                    "--server",
+                    server_id,
+                    "--telemetry-level",
+                    "disabled",
+                    "--json",
+                ],
+                capture_output=True,
+                text=True,
             )
-        else:
-            # Speedtest succeeded
-            logger.debug(f"Speedtest succeeded. Parsing JSON results.")
-            # Parse JSON results
-            try:
-                json_result = json.loads(result.stdout)
-            except json.decoder.JSONDecodeError as err:
-                logger.debug(f"Failed to parse JSON results.\nError: {err}")
-                logger.debug(f"Sleeping for {SPEEDER_SPEEDTEST_INTERVAL} seconds.")
-                time.sleep(SPEEDER_SPEEDTEST_INTERVAL)
-                continue
-            with client.write_api(write_options=SYNCHRONOUS) as write_api:
-                # Create InfluxDB record
-                record = [
-                    {
-                        "measurement": "internet_speed",
-                        "tags": {
-                            "server_name": json_result[0]["server"]["name"],
-                            "server_url": json_result[0]["server"]["url"],
-                            "ip": json_result[0]["client"]["ip"],
-                            "hostname": json_result[0]["client"]["hostname"],
-                            "region": json_result[0]["client"]["region"],
-                            "city": json_result[0]["client"]["city"],
-                            "country": json_result[0]["client"]["country"],
-                            "org": json_result[0]["client"]["org"],
-                            "timezone": json_result[0]["client"]["timezone"],
-                        },
-                        "time": json_result[0]["timestamp"],
-                        "fields": {
-                            "bytes_sent": json_result[0]["bytes_sent"],
-                            "bytes_received": json_result[0]["bytes_received"],
-                            "ping": float(json_result[0]["ping"]),
-                            "jitter": float(json_result[0]["jitter"]),
-                            "upload": float(json_result[0]["upload"]),
-                            "download": float(json_result[0]["download"]),
-                        },
-                    }
-                ]
-                # Write results to InfluxDB
+            # Check if the speedtest failed
+            if result.returncode != 0:
+                # CLI errors go to stdout
                 logger.debug(
-                    f"Writing results to InfluxDB bucket: {SPEEDER_INFLUXDB_BUCKET}.\nResults: {record}"
+                    f"Speedtest for server ID: {server_id} failed with exit code: {result.returncode}.\nError: {result.stdout}"
                 )
-                write_api.write(bucket=SPEEDER_INFLUXDB_BUCKET, record=record)
+            else:
+                logger.debug(f"Speedtest for server ID: {server_id} succeeded.")
+                try:
+                    json_result = json.loads(result.stdout)
+                except json.decoder.JSONDecodeError as err:
+                    logger.debug(
+                        f"Failed to parse JSON results for server ID: {server_id}.\nError: {err}"
+                    )
+                    continue
+                with client.write_api(write_options=SYNCHRONOUS) as write_api:
+                    record = [
+                        {
+                            "measurement": "internet_speed",
+                            "tags": {
+                                "server_name": json_result[0]["server"]["name"],
+                                "server_url": json_result[0]["server"]["url"],
+                                "ip": json_result[0]["client"]["ip"],
+                                "hostname": json_result[0]["client"]["hostname"],
+                                "region": json_result[0]["client"]["region"],
+                                "city": json_result[0]["client"]["city"],
+                                "country": json_result[0]["client"]["country"],
+                                "org": json_result[0]["client"]["org"],
+                                "timezone": json_result[0]["client"]["timezone"],
+                            },
+                            "time": json_result[0]["timestamp"],
+                            "fields": {
+                                "bytes_sent": json_result[0]["bytes_sent"],
+                                "bytes_received": json_result[0]["bytes_received"],
+                                "ping": float(json_result[0]["ping"]),
+                                "jitter": float(json_result[0]["jitter"]),
+                                "upload": float(json_result[0]["upload"]),
+                                "download": float(json_result[0]["download"]),
+                            },
+                        }
+                    ]
+                    logger.debug(
+                        f"Writing record to InfluxDB bucket: {SPEEDER_INFLUXDB_BUCKET} for speedtest at {json_result[0]['timestamp']} using server ID: {server_id}."
+                    )
+                    logger.debug(f"Record:\n{record}")
+                    write_api.write(bucket=SPEEDER_INFLUXDB_BUCKET, record=record)
         logger.debug(f"Sleeping for {SPEEDER_SPEEDTEST_INTERVAL} seconds.")
         time.sleep(SPEEDER_SPEEDTEST_INTERVAL)

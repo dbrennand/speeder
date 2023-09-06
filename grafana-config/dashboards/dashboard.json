@@ -146,10 +146,10 @@
               "type": "fill"
             }
           ],
-          "measurement": "internet_speed",
+          "measurement": "speeder",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: \"internet_speed\")\n    |> range(start: ${__from:date:iso})\n    |> filter(fn: (r) => \n      r._measurement == \"internet_speed\" and\n      r._field == \"upload\"\n    )\n    |> drop(columns: [\"server_name\", \"server_url\"])",
+          "query": "from(bucket: \"speeder\")\n    |> range(start: ${__from:date:iso})\n    |> filter(fn: (r) => \n      r._measurement == \"speeder\" and\n      r._field == \"upload\"\n    )\n    |> drop(columns: [\"server_name\", \"server_url\"])",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -198,7 +198,7 @@
             "uid": "P5697886F9CA74929"
           },
           "hide": false,
-          "query": "from(bucket: \"internet_speed\")\n    |> range(start: ${__from:date:iso})\n    |> filter(fn: (r) => \n      r._measurement == \"internet_speed\" and\n      r._field == \"download\"\n    )\n    |> drop(columns: [\"server_name\", \"server_url\"])",
+          "query": "from(bucket: \"speeder\")\n    |> range(start: ${__from:date:iso})\n    |> filter(fn: (r) => \n      r._measurement == \"speeder\" and\n      r._field == \"download\"\n    )\n    |> drop(columns: [\"server_name\", \"server_url\"])",
           "refId": "B"
         }
       ],
@@ -330,10 +330,10 @@
               "type": "fill"
             }
           ],
-          "measurement": "internet_speed",
+          "measurement": "speeder",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: \"internet_speed\")\n    |> range(start: ${__from:date:iso})\n    |> filter(fn: (r) => \n      r._measurement == \"internet_speed\" and\n      r._field == \"bytes_sent\"\n    )\n    |> drop(columns: [\"server_name\", \"server_url\"])",
+          "query": "from(bucket: \"speeder\")\n    |> range(start: ${__from:date:iso})\n    |> filter(fn: (r) => \n      r._measurement == \"speeder\" and\n      r._field == \"bytes_sent\"\n    )\n    |> drop(columns: [\"server_name\", \"server_url\"])",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -382,7 +382,7 @@
             "uid": "P5697886F9CA74929"
           },
           "hide": false,
-          "query": "from(bucket: \"internet_speed\")\n    |> range(start: ${__from:date:iso})\n    |> filter(fn: (r) => \n      r._measurement == \"internet_speed\" and\n      r._field == \"bytes_received\"\n    )\n    |> drop(columns: [\"server_name\", \"server_url\"])",
+          "query": "from(bucket: \"speeder\")\n    |> range(start: ${__from:date:iso})\n    |> filter(fn: (r) => \n      r._measurement == \"speeder\" and\n      r._field == \"bytes_received\"\n    )\n    |> drop(columns: [\"server_name\", \"server_url\"])",
           "refId": "B"
         }
       ],
@@ -513,10 +513,10 @@
               "type": "fill"
             }
           ],
-          "measurement": "internet_speed",
+          "measurement": "speeder",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: \"internet_speed\")\n    |> range(start: ${__from:date:iso})\n    |> filter(fn: (r) => \n      r._measurement == \"internet_speed\" and\n      r._field == \"ping\"\n    )\n    |> drop(columns: [\"server_name\", \"server_url\"])",
+          "query": "from(bucket: \"speeder\")\n    |> range(start: ${__from:date:iso})\n    |> filter(fn: (r) => \n      r._measurement == \"speeder\" and\n      r._field == \"ping\"\n    )\n    |> drop(columns: [\"server_name\", \"server_url\"])",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -565,7 +565,7 @@
             "uid": "P5697886F9CA74929"
           },
           "hide": false,
-          "query": "from(bucket: \"internet_speed\")\n    |> range(start: ${__from:date:iso})\n    |> filter(fn: (r) => \n      r._measurement == \"internet_speed\" and\n      r._field == \"jitter\"\n    )\n    |> drop(columns: [\"server_name\", \"server_url\"])",
+          "query": "from(bucket: \"speeder\")\n    |> range(start: ${__from:date:iso})\n    |> filter(fn: (r) => \n      r._measurement == \"speeder\" and\n      r._field == \"jitter\"\n    )\n    |> drop(columns: [\"server_name\", \"server_url\"])",
           "refId": "B"
         }
       ],
@@ -769,7 +769,7 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: \"internet_speed\")\n    |> range(start: ${__from:date:iso})\n    |> filter(fn: (r) => r._measurement == \"internet_speed\")",
+          "query": "from(bucket: \"speeder\")\n    |> range(start: ${__from:date:iso})\n    |> filter(fn: (r) => r._measurement == \"speeder\")",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",

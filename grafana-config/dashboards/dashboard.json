@@ -149,7 +149,7 @@
           "measurement": "speeder",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: \"speeder\")\n    |> range(start: ${__from:date:iso})\n    |> filter(fn: (r) => \n      r._measurement == \"speeder\" and\n      r._field == \"upload\"\n    )\n    |> drop(columns: [\"server_name\", \"server_url\"])",
+          "query": "from(bucket: \"speeder\")\n    |> range(start: ${__from:date:iso})\n    |> filter(fn: (r) => \n      r._measurement == \"speeder\" and\n      r._field == \"upload\" and\n      r.server_name == \"${Server}\"\n    )\n    |> drop(columns: [\"server_name\", \"server_url\"])",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -333,7 +333,7 @@
           "measurement": "speeder",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: \"speeder\")\n    |> range(start: ${__from:date:iso})\n    |> filter(fn: (r) => \n      r._measurement == \"speeder\" and\n      r._field == \"bytes_sent\"\n    )\n    |> drop(columns: [\"server_name\", \"server_url\"])",
+          "query": "from(bucket: \"speeder\")\n    |> range(start: ${__from:date:iso})\n    |> filter(fn: (r) => \n      r._measurement == \"speeder\" and\n      r._field == \"bytes_sent\" and\n      r.server_name == \"${Server}\"\n    )\n    |> drop(columns: [\"server_name\", \"server_url\"])",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -516,7 +516,7 @@
           "measurement": "speeder",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: \"speeder\")\n    |> range(start: ${__from:date:iso})\n    |> filter(fn: (r) => \n      r._measurement == \"speeder\" and\n      r._field == \"ping\"\n    )\n    |> drop(columns: [\"server_name\", \"server_url\"])",
+          "query": "from(bucket: \"speeder\")\n    |> range(start: ${__from:date:iso})\n    |> filter(fn: (r) => \n      r._measurement == \"speeder\" and\n      r._field == \"ping\" and\n      r.server_name == \"${Server}\"\n    )\n    |> drop(columns: [\"server_name\", \"server_url\"])",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -769,7 +769,7 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: \"speeder\")\n    |> range(start: ${__from:date:iso})\n    |> filter(fn: (r) => r._measurement == \"speeder\")",
+          "query": "from(bucket: \"speeder\")\n    |> range(start: ${__from:date:iso})\n    |> filter(fn: (r) => r._measurement == \"speeder\" and\n      r.server_name == \"${Server}\")",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table",
@@ -794,14 +794,17 @@
       "transformations": [
         {
           "id": "prepareTimeSeries",
-          "options": {}
+          "options": {
+            "format": "wide"
+          }
         },
         {
           "id": "labelsToFields",
           "options": {
             "keepLabels": [
               "server_name"
-            ]
+            ],
+            "mode": "columns"
           }
         },
         {
@@ -840,7 +843,29 @@
   "style": "dark",
   "tags": [],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "current": {},
+        "datasource": {
+          "type": "influxdb",
+          "uid": "P5697886F9CA74929"
+        },
+        "definition": "from(bucket: \"speeder\")\n    |> range(start: ${__from:date:iso})\n    |> filter(fn: (r) => r._measurement == \"speeder\")\n    |> keep(columns: [\"server_name\"])\n    |> distinct(column: \"server_name\")\n    |> keep(columns: [\"_value\"])",
+        "description": "Server Name.",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Server",
+        "multi": false,
+        "name": "Server",
+        "options": [],
+        "query": "from(bucket: \"speeder\")\n    |> range(start: ${__from:date:iso})\n    |> filter(fn: (r) => r._measurement == \"speeder\")\n    |> keep(columns: [\"server_name\"])\n    |> distinct(column: \"server_name\")\n    |> keep(columns: [\"_value\"])",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      }
+    ]
   },
   "time": {
     "from": "now-1h",
@@ -864,6 +889,6 @@
   "timezone": "",
   "title": "Speedtest Results",
   "uid": "ll6ARVfGk",
-  "version": 3,
+  "version": 9,
   "weekStart": ""
 }

@@ -44,7 +44,7 @@ The [speeder](speeder.py) script is configured using the below environment varia
 
 # Docker Compose Stack - InfluxDB and Grafana
 
-The [docker-compose.yml](docker-compose.yml) file in this repository will deploy speeder, InfluxDB and Grafana containers. Grafana will be provisioned with InfluxDB as the [data source](grafana-config/datasources/datasource.yml) and the pre-created [dashboard](grafana-config/dashboards/dashboard.json):
+The [docker-compose.yml](docker-compose.yml) file in this repository will deploy speeder, InfluxDB `2.7.1` and Grafana containers. Grafana will be provisioned with InfluxDB as the [data source](grafana-config/datasources/datasource.yml) and the pre-created [dashboard](grafana-config/dashboards/dashboard.json):
 
 ![Dashboard](images/dashboard.png)
 

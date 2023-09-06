@@ -41,8 +41,8 @@ SPEEDER_SPEEDTEST_SERVER_ID = os.environ.get("SPEEDER_SPEEDTEST_SERVER_ID", "")
 SPEEDER_INFLUXDB_HOST = os.environ.get("SPEEDER_INFLUXDB_HOST", "influxdb")
 SPEEDER_INFLUXDB_PORT = int(os.environ.get("SPEEDER_INFLUXDB_PORT", 8086))
 SPEEDER_INFLUXDB_TOKEN = os.environ.get("SPEEDER_INFLUXDB_TOKEN", "root")
-SPEEDER_INFLUXDB_ORG = os.environ.get("SPEEDER_INFLUXDB_ORG", "internet_speed")
-SPEEDER_INFLUXDB_BUCKET = os.environ.get("SPEEDER_INFLUXDB_BUCKET", "internet_speed")
+SPEEDER_INFLUXDB_ORG = os.environ.get("SPEEDER_INFLUXDB_ORG", "speeder")
+SPEEDER_INFLUXDB_BUCKET = os.environ.get("SPEEDER_INFLUXDB_BUCKET", "speeder")
 
 # Check environment variable has not been provided
 if not SPEEDER_SPEEDTEST_SERVER_ID:
@@ -99,7 +99,7 @@ with InfluxDBClient(
                 with client.write_api(write_options=SYNCHRONOUS) as write_api:
                     record = [
                         {
-                            "measurement": "internet_speed",
+                            "measurement": "speeder",
                             "tags": {
                                 "server_name": json_result[0]["server"]["name"],
                                 "server_url": json_result[0]["server"]["url"],

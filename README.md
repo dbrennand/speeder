@@ -1,5 +1,7 @@
 # Speeder
 
+![Build](https://github.com/dbrennand/speeder/actions/workflows/build.yml/badge.svg)
+
 Python script to monitor your internet speed! 🚀
 
 Periodically run [librespeed/speedtest-cli](https://github.com/librespeed/speedtest-cli) and send results to [InfluxDB](https://www.influxdata.com/products/influxdb/).

@@ -198,7 +198,7 @@
             "uid": "P5697886F9CA74929"
           },
           "hide": false,
-          "query": "from(bucket: \"speeder\")\n    |> range(start: ${__from:date:iso})\n    |> filter(fn: (r) => \n      r._measurement == \"speeder\" and\n      r._field == \"download\"\n    )\n    |> drop(columns: [\"server_name\", \"server_url\"])",
+          "query": "from(bucket: \"speeder\")\n    |> range(start: ${__from:date:iso})\n    |> filter(fn: (r) => \n      r._measurement == \"speeder\" and\n      r._field == \"download\" and\n      r.server_name == \"${Server}\"\n    )\n    |> drop(columns: [\"server_name\", \"server_url\"])",
           "refId": "B"
         }
       ],
@@ -382,7 +382,7 @@
             "uid": "P5697886F9CA74929"
           },
           "hide": false,
-          "query": "from(bucket: \"speeder\")\n    |> range(start: ${__from:date:iso})\n    |> filter(fn: (r) => \n      r._measurement == \"speeder\" and\n      r._field == \"bytes_received\"\n    )\n    |> drop(columns: [\"server_name\", \"server_url\"])",
+          "query": "from(bucket: \"speeder\")\n    |> range(start: ${__from:date:iso})\n    |> filter(fn: (r) => \n      r._measurement == \"speeder\" and\n      r._field == \"bytes_received\" and\n      r.server_name == \"${Server}\"\n    )\n    |> drop(columns: [\"server_name\", \"server_url\"])",
           "refId": "B"
         }
       ],
@@ -565,7 +565,7 @@
             "uid": "P5697886F9CA74929"
           },
           "hide": false,
-          "query": "from(bucket: \"speeder\")\n    |> range(start: ${__from:date:iso})\n    |> filter(fn: (r) => \n      r._measurement == \"speeder\" and\n      r._field == \"jitter\"\n    )\n    |> drop(columns: [\"server_name\", \"server_url\"])",
+          "query": "from(bucket: \"speeder\")\n    |> range(start: ${__from:date:iso})\n    |> filter(fn: (r) => \n      r._measurement == \"speeder\" and\n      r._field == \"jitter\" and\n      r.server_name == \"${Server}\"\n    )\n    |> drop(columns: [\"server_name\", \"server_url\"])",
           "refId": "B"
         }
       ],
@@ -868,7 +868,7 @@
     ]
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-6h",
     "to": "now"
   },
   "timepicker": {
@@ -889,6 +889,6 @@
   "timezone": "",
   "title": "Speedtest Results",
   "uid": "ll6ARVfGk",
-  "version": 9,
+  "version": 2,
   "weekStart": ""
 }

@@ -48,6 +48,8 @@ The [docker-compose.yml](docker-compose.yml) file in this repository will deploy
 
 ![Dashboard](images/dashboard.png)
 
+![Dashboard 1](images/dashboard1.png)
+
 1. Set the `SPEEDER_SPEEDTEST_SERVER_ID` environment variable located in the [.env](.env) file to the server IDs to perform speedtests against.
 
     > **Note**

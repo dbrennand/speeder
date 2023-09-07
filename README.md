@@ -1,6 +1,7 @@
 # Speeder
 
 ![Build](https://github.com/dbrennand/speeder/actions/workflows/build.yml/badge.svg)
+![Lint](https://github.com/dbrennand/speeder/actions/workflows/lint.yml/badge.svg)
 
 Python script to monitor your internet speed! 🚀
 

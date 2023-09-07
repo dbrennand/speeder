@@ -12,7 +12,7 @@ Periodically run [librespeed/speedtest-cli](https://github.com/librespeed/speedt
 List available server IDs:
 
 ```bash
-docker run --rm -it ghcr.io/dbrennand/speeder:1.1.0 /librespeed --list
+docker run --rm -it ghcr.io/dbrennand/speeder:latest /librespeed --list
 ```
 
 Next, start and configure speeder using the environment variables:
@@ -25,7 +25,7 @@ docker run -itd --rm --name speeder \
     -e "SPEEDER_INFLUXDB_TOKEN=<Token>" \
     -e "SPEEDER_INFLUXDB_ORG=speeder" \
     -e "SPEEDER_INFLUXDB_BUCKET=speeder" \
-    ghcr.io/dbrennand/speeder:1.1.0
+    ghcr.io/dbrennand/speeder:latest
 ```
 
 # Environment Variables
@@ -54,7 +54,7 @@ The [docker-compose.yml](docker-compose.yml) file in this repository will deploy
     >
     > If you don't know any server IDs, run the following command to list them:
     > ```bash
-    > docker run --rm -it ghcr.io/dbrennand/speeder:1.1.0 /librespeed --list
+    > docker run --rm -it ghcr.io/dbrennand/speeder:latest /librespeed --list
     > ```
 
 2. Set the `DOCKER_INFLUXDB_INIT_PASSWORD`, `DOCKER_INFLUXDB_INIT_ADMIN_TOKEN` and `GF_SECURITY_ADMIN_PASSWORD` environment variables located in the [.env](.env) file.

@@ -1,5 +1,4 @@
-#
-name: Create and publish Docker image
+name: Build
 
 on:
   workflow_dispatch:

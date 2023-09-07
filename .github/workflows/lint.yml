@@ -1,4 +1,4 @@
-name: Lint with Black
+name: Lint
 
 on: [push, pull_request]
 

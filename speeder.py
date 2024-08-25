@@ -21,6 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
+
 from influxdb_client.client.write_api import SYNCHRONOUS
 from influxdb_client import InfluxDBClient
 from loguru import logger
@@ -93,7 +94,9 @@ with InfluxDBClient(
                     json_result = json.loads(result.stdout)
                     # Check if the JSON result is empty
                     if not json_result:
-                        raise json.decoder.JSONDecodeError("JSON result is empty.", json_result, 0)
+                        raise json.decoder.JSONDecodeError(
+                            "JSON result is empty.", json_result, 0
+                        )
                 except json.decoder.JSONDecodeError as err:
                     logger.error(
                         f"Failed to parse JSON results for server ID: {server_id}.\nError: {err}"

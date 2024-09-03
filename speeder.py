@@ -30,7 +30,7 @@ import os
 import json
 import time
 
-__version__ = "1.1.0"
+__version__ = "1.2.0"
 
 logger.debug(f"Starting speeder version: {__version__}.")
 

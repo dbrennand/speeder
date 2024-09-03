@@ -1,7 +1,7 @@
 """
 MIT License
 
-Copyright (c) 2023 dbrennand
+Copyright (c) 2024 dbrennand
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -21,6 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
+
 from influxdb_client.client.write_api import SYNCHRONOUS
 from influxdb_client import InfluxDBClient
 from loguru import logger
@@ -54,7 +55,7 @@ if not SPEEDER_SPEEDTEST_SERVER_ID:
     exit(1)
 else:
     # Create list from comma separated string of server IDs
-    SPEEDER_SPEEDTEST_SERVER_ID = SPEEDER_SPEEDTEST_SERVER_ID.split(",")
+    SPEEDER_SPEEDTEST_SERVER_IDs = SPEEDER_SPEEDTEST_SERVER_ID.split(",")
 
 # Connect to InfluxDB
 logger.debug(
@@ -67,7 +68,7 @@ with InfluxDBClient(
 ) as client:
     # Run the speedtest using the librespeed/speedtest-cli on an interval
     while True:
-        for server_id in SPEEDER_SPEEDTEST_SERVER_ID:
+        for server_id in SPEEDER_SPEEDTEST_SERVER_IDs:
             logger.debug(f"Running speedtest for server ID: {server_id}.")
             result = subprocess.run(
                 [
@@ -84,15 +85,20 @@ with InfluxDBClient(
             # Check if the speedtest failed
             if result.returncode != 0:
                 # CLI errors go to stdout
-                logger.debug(
+                logger.error(
                     f"Speedtest for server ID: {server_id} failed with exit code: {result.returncode}.\nError: {result.stdout}"
                 )
             else:
                 logger.debug(f"Speedtest for server ID: {server_id} succeeded.")
                 try:
                     json_result = json.loads(result.stdout)
+                    # Check if the JSON result is empty
+                    if not json_result:
+                        raise json.decoder.JSONDecodeError(
+                            "JSON result is empty.", json_result, 0
+                        )
                 except json.decoder.JSONDecodeError as err:
-                    logger.debug(
+                    logger.error(
                         f"Failed to parse JSON results for server ID: {server_id}.\nError: {err}"
                     )
                     continue

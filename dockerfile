@@ -18,4 +18,4 @@ RUN uv sync --no-dev
 # Copy the librespeed CLI binary to the Python image to reduce size
 COPY --from=build /speedtest-cli/librespeed .
 # Run speedtest script
-CMD ["uv", "run", "speeder.py"]
+CMD ["uv", "run", "--no-dev", "speeder.py"]

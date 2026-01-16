@@ -33,7 +33,7 @@ services:
       - "SPEEDER_INFLUXDB_BUCKET=speeder"
       - "SPEEDER_INFLUXDB_TOKEN=${DOCKER_INFLUXDB_INIT_ADMIN_TOKEN}"
   grafana:
-    image: grafana/grafana:12.3.1
+    image: "grafana/grafana:${GRAFANA_IMAGE_TAG}"
     container_name: grafana
     ports:
       - 3000:3000

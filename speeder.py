@@ -30,7 +30,7 @@ import os
 import json
 import time
 
-__version__ = "1.2.1"
+__version__ = "2.0.0"
 
 logger.debug(f"Starting speeder version: {__version__}.")
 
@@ -41,7 +41,7 @@ SPEEDER_SPEEDTEST_INTERVAL = int(
 SPEEDER_SPEEDTEST_SERVER_ID = os.environ.get("SPEEDER_SPEEDTEST_SERVER_ID", "")
 SPEEDER_INFLUXDB_HOST = os.environ.get("SPEEDER_INFLUXDB_HOST", "influxdb")
 SPEEDER_INFLUXDB_PORT = int(os.environ.get("SPEEDER_INFLUXDB_PORT", 8086))
-SPEEDER_INFLUXDB_TOKEN = os.environ.get("SPEEDER_INFLUXDB_TOKEN", "root")
+SPEEDER_INFLUXDB_TOKEN = os.environ.get("SPEEDER_INFLUXDB_TOKEN", "speeder!")
 SPEEDER_INFLUXDB_ORG = os.environ.get("SPEEDER_INFLUXDB_ORG", "speeder")
 SPEEDER_INFLUXDB_BUCKET = os.environ.get("SPEEDER_INFLUXDB_BUCKET", "speeder")
 
@@ -95,7 +95,7 @@ with InfluxDBClient(
                     # Check if the JSON result is empty
                     if not json_result:
                         raise json.decoder.JSONDecodeError(
-                            "JSON result is empty.", json_result, 0
+                            "JSON result is empty.", "", 0
                         )
                 except json.decoder.JSONDecodeError as err:
                     logger.error(

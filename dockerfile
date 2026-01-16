@@ -14,8 +14,8 @@ COPY pyproject.toml /
 COPY uv.lock /
 COPY speeder.py /
 WORKDIR /
-RUN uv sync
+RUN uv sync --no-dev
 # Copy the librespeed CLI binary to the Python image to reduce size
 COPY --from=build /speedtest-cli/librespeed .
 # Run speedtest script
-CMD ["python", "speeder.py"]
+CMD ["uv", "run", "speeder.py"]

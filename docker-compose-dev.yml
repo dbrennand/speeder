@@ -18,7 +18,8 @@ services:
       - "DOCKER_INFLUXDB_INIT_ORG=speeder"
       - "DOCKER_INFLUXDB_INIT_BUCKET=speeder"
   speeder:
-    image: ghcr.io/dbrennand/speeder:latest
+    image: ghcr.io/dbrennand/speeder:dev
+    build: .
     container_name: speeder
     depends_on:
       - influxdb

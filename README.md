@@ -41,13 +41,13 @@ The [speeder](speeder.py) script is configured using the below environment varia
 | `SPEEDER_SPEEDTEST_SERVER_ID` | Server ID to run speedtests against. Supports multiple IDs using a comma separated string. | ""            |
 | `SPEEDER_INFLUXDB_HOST`       | InfluxDB hostname.                                                                         | influxdb      |
 | `SPEEDER_INFLUXDB_PORT`       | InfluxDB port.                                                                             | 8086          |
-| `SPEEDER_INFLUXDB_TOKEN`      | InfluxDB token.                                                                            | root          |
+| `SPEEDER_INFLUXDB_TOKEN`      | InfluxDB token.                                                                            | speeder!      |
 | `SPEEDER_INFLUXDB_ORG`        | InfluxDB organisation name.                                                                | speeder       |
 | `SPEEDER_INFLUXDB_BUCKET`     | InfluxDB bucket name to write speedtest results to.                                        | speeder       |
 
 # Docker Compose Stack - InfluxDB and Grafana
 
-The [docker-compose.yml](docker-compose.yml) file in this repository will deploy speeder, InfluxDB `2.7.1` and Grafana containers. Grafana will be provisioned with InfluxDB as the [data source](grafana-config/datasources/datasource.yml) and the pre-created [dashboard](grafana-config/dashboards/dashboard.json):
+The [docker-compose.yml](docker-compose.yml) file in this repository will deploy speeder, InfluxDB `2.8` and Grafana `12.3.1` containers. Grafana will be provisioned with InfluxDB as the [data source](grafana-config/datasources/datasource.yml) and the pre-created [dashboard](grafana-config/dashboards/dashboard.json):
 
 ![Dashboard](images/dashboard.png)
 

@@ -1,7 +1,7 @@
 """
 MIT License
 
-Copyright (c) 2024 dbrennand
+Copyright (c) 2026 Daniel Brennand
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -30,7 +30,7 @@ import os
 import json
 import time
 
-__version__ = "1.2.0"
+__version__ = "1.2.1"
 
 logger.debug(f"Starting speeder version: {__version__}.")
 
